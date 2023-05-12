@@ -1,0 +1,57 @@
+version: '3'
+services:
+  app:
+    # build: .
+    image: <user>/custom-web-01:1.0
+    # volumes:
+      # - .:/usr/app/
+      # - dependencies:/usr/app/node_modules
+    # working_dir: /usr/app
+    environment:
+      NODE_ENV: production
+      IMAGE_URL_LOCAL: localhost:3001/api/v1
+      IMAGE_URL_PROD: https://test.com/api/v1
+      PORT_APP: 3001
+      DB_NAME: custom-web-01
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_HOST: mariadb
+      # DB_HOST: host.docker.internal
+      DB_PORT: 3310
+      # DB_PORT: 3306
+      DB_DIAL: mysql #'mysql' | 'mariadb' | 'postgres' | 'mssql'
+    depends_on:
+      - mariadb
+    ports:
+      - 3001:3001
+
+    # db gui (phpmyadmin)
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    depends_on:
+      - mariadb
+    ports:
+      - "8082:80"
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_PORT=3310
+
+  mariadb:
+    # platform: linux/x86_64 # for m1
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_TCP_PORT: 3310
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER:  root 
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: custom-app
+    ports:
+      - "3310:3310"
+    volumes:
+      - my-db:/var/lib/mysql
+
+volumes:
+  # dependencies:
+  my-db:
