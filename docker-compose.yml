@@ -12,7 +12,7 @@ services:
       IMAGE_URL_LOCAL: localhost:3001/api/v1
       IMAGE_URL_PROD: https://test.com/api/v1
       PORT_APP: 3001
-      DB_NAME: custom-web-01
+      DB_NAME: custom-web-01-v1
       DB_USER: root
       DB_PASSWORD: root
       DB_HOST: mariadb
